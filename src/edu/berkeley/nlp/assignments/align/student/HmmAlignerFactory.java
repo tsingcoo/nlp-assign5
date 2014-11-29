@@ -14,11 +14,6 @@ public class HmmAlignerFactory implements WordAlignerFactory
 {
 
 	public WordAligner newAligner(Iterable<SentencePair> trainingData) {
-
-
-
-
-
-		 return null;
+        return new HmmMetaWordAligner(trainingData);
 	}
 }
