@@ -101,6 +101,10 @@ public class HmmWordAligner implements WordAligner {
                         trans_norm[pie] += this.trans.get(flatten(ie - pie));
                     }
                 }
+                double trans_norm_beg = 0;
+                for (int ie = 0; ie < ne; ie++) {
+                    trans_norm_beg += this.trans.get(flatten(ie+1));
+                }
 
                 // forward
                 {
@@ -108,7 +112,7 @@ public class HmmWordAligner implements WordAligner {
                     for (int ie = 0; ie < ne; ie++) {
                         String word_e = sentencePair.englishWords.get(ie);
                         int key = this.packageWordPair(word_e, word_f);
-                        a[ie][0] = 1. / ne * this.p.get(key, 0);
+                        a[ie][0] = this.p.get(key, 0) * this.trans.get(flatten(ie + 1)) / trans_norm_beg;
                     }
                 }
                 for (int t = 1; t < nf; t++) {
@@ -255,6 +259,10 @@ public class HmmWordAligner implements WordAligner {
                 trans_norm[pie] += this.trans.get(flatten(ie - pie));
             }
         }
+        double trans_norm_beg = 0;
+        for (int ie = 0; ie < ne; ie++) {
+            trans_norm_beg += this.trans.get(flatten(ie+1));
+        }
 
         int[] alignments = new int[nf];
         Arrays.fill(alignments, -1);
@@ -280,7 +288,7 @@ public class HmmWordAligner implements WordAligner {
 
                 int key = this.packageWordPair(word_e, word_f);
                 try {
-                    a[ie][0] = 1. / ne * this.p.get(key, 0);
+                    a[ie][0] = this.p.get(key, 0) * this.trans.get(ie+1) / trans_norm_beg;
                 }
                 catch (Exception e) {
                     a[ie][0] = 0;
@@ -302,8 +310,14 @@ public class HmmWordAligner implements WordAligner {
 
                 int key = this.packageWordPair(word_e, word_f);
                 // translation probability
-                double tp = p.get(key, 0);
 
+                double tp=0;
+                try {
+                    tp = p.get(key, 0);
+                }
+                catch (Exception e) {
+                    a[ie][t] = 0;
+                }
                 double max_score = Double.NEGATIVE_INFINITY;
                 int max_pie = -1;
 
