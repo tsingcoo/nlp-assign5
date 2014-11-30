@@ -12,6 +12,6 @@ import edu.berkeley.nlp.mt.phrasetable.PhraseTable;
 public class HeuristicAlignerFactory implements WordAlignerFactory
 {
 	public WordAligner newAligner(Iterable<SentencePair> trainingData) {
-        return new HeuristicWordAligner(trainingData);
+        return new HeuristicMetaWordAligner(trainingData);
 	}
 }
