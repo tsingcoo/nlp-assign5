@@ -39,7 +39,7 @@ public class HeuristicWordAligner implements WordAligner {
 
         System.out.println("english words: " + word_count_e.size());
         System.out.println("french words: " + word_count_f.size());
-        System.exit(0);
+        //System.exit(0);
     }
 
     private void count_cross_words(Map<Pair<String, String>, Integer> map, List<String> words_e, List<String> words_f) {
@@ -84,6 +84,7 @@ public class HeuristicWordAligner implements WordAligner {
             res.addAlignment(ne-1, nf-1, true);
         }
 
+        /*
         SimpleMatrix scores = new SimpleMatrix(sentencePair.englishWords.size(), sentencePair.frenchWords.size());
 
         for (int ei = 0; ei < sentencePair.englishWords.size(); ei++) {
@@ -100,8 +101,9 @@ public class HeuristicWordAligner implements WordAligner {
                 }
             }
         }
+        */
 
-        (scores.elementLog().plus(20)).print("%4.1f");
+       // (scores.elementLog().plus(20)).print("%4.1f");
 
 
 
